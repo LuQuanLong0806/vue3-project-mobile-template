@@ -1,10 +1,10 @@
 <template>
   <div class="hello-world">
-    <el-card class="welcome-card" shadow="hover">
+    <van-card class="welcome-card">
       <template #header>
         <div class="card-header">
           <span>{{ title }}</span>
-          <el-tag type="success">Vue 3</el-tag>
+          <van-tag type="success">Vue 3</van-tag>
         </div>
       </template>
       
@@ -15,13 +15,16 @@
         </p>
         
         <div class="stats">
-          <el-statistic title="页面访问次数" :value="visitCount" />
-          <el-button type="primary" @click="incrementVisit">
+          <div class="visit-counter">
+            <div class="counter-title">页面访问次数</div>
+            <div class="counter-value">{{ visitCount }}</div>
+          </div>
+          <van-button type="primary" @click="incrementVisit">
             点击增加访问次数
-          </el-button>
+          </van-button>
         </div>
       </div>
-    </el-card>
+    </van-card>
   </div>
 </template>
 
@@ -82,5 +85,21 @@ function incrementVisit() {
   flex-direction: column;
   align-items: center;
   gap: 16px;
+}
+
+.visit-counter {
+  text-align: center;
+}
+
+.counter-title {
+  font-size: 14px;
+  color: #646566;
+  margin-bottom: 8px;
+}
+
+.counter-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1989fa;
 }
 </style>

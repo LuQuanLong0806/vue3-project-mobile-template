@@ -41,12 +41,43 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
-    host: true
+    host: true,
+    // 移动端开发时禁用自动打开浏览器，便于使用模拟器
+    strictPort: false
   },
   build: {
     outDir: 'dist',
     sourcemap: false,
     minify: 'terser',
-    cssCodeSplit: true
+    cssCodeSplit: true,
+    // 移动端优化配置
+    target: 'es2015',
+    rollupOptions: {
+      output: {
+        // 分包策略优化，减少移动端加载时间
+        manualChunks: {
+          vendor: ['vue', 'vue-router', 'pinia'],
+          vant: ['vant'],
+          utils: ['@vueuse/core']
+        },
+        // 资源文件命名优化
+        chunkFileNames: 'js/[name]-[hash].js',
+        entryFileNames: 'js/[name]-[hash].js',
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name?.endsWith('.css')) {
+            return 'css/[name]-[hash].css'
+          }
+          return 'assets/[name]-[hash].[ext]'
+        }
+      }
+    },
+    // 移动端性能优化
+    chunkSizeWarningLimit: 500,
+    assetsInlineLimit: 4096
+  },
+  // 移动端预览配置
+  preview: {
+    port: 3000,
+    host: true
   }
 })
