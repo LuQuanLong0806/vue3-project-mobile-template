@@ -1,6 +1,6 @@
 {
   "name": "vue3-project-mobile-template",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "author": "QuanLong Lu",
   "type": "module",
