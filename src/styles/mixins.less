@@ -1,0 +1,348 @@
+// Less 混合器(mixins)文件
+
+// ==================== 布局相关混合器 ====================
+
+// 弹性布局
+.flex(@direction: row, @justify: flex-start, @align: stretch, @wrap: nowrap) {
+  display: flex;
+  flex-direction: @direction;
+  justify-content: @justify;
+  align-items: @align;
+  flex-wrap: @wrap;
+}
+
+// 居中布局
+.center-flex() {
+  .flex(row, center, center);
+}
+
+// 绝对定位居中
+.absolute-center() {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// 网格布局
+.grid(@columns: 1fr, @rows: auto, @gap: @spacing-md) {
+  display: grid;
+  grid-template-columns: @columns;
+  grid-template-rows: @rows;
+  gap: @gap;
+}
+
+// 响应式网格
+.responsive-grid(@min-width: 300px, @gap: @spacing-md) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(@min-width, 1fr));
+  gap: @gap;
+}
+
+// ==================== 尺寸相关混合器 ====================
+
+// 设置宽高
+.size(@width, @height: @width) {
+  width: @width;
+  height: @height;
+}
+
+// 最小尺寸
+.min-size(@width, @height: @width) {
+  min-width: @width;
+  min-height: @height;
+}
+
+// 最大尺寸
+.max-size(@width, @height: @width) {
+  max-width: @width;
+  max-height: @height;
+}
+
+// 正方形
+.square(@size) {
+  .size(@size);
+}
+
+// 圆形
+.circle(@size) {
+  .square(@size);
+  border-radius: @border-radius-circle;
+}
+
+// ==================== 文字相关混合器 ====================
+
+// 文字省略
+.text-ellipsis() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 多行文字省略
+.text-ellipsis-lines(@lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: @lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// 文字样式
+.text(@size: @font-size-base, @color: @text-color-primary, @weight: @font-weight-normal) {
+  font-size: @size;
+  color: @color;
+  font-weight: @weight;
+}
+
+// 文字居中
+.text-center() {
+  text-align: center;
+}
+
+// 响应式字体
+.responsive-font(@min-size: 12px, @max-size: 24px, @vw: 2vw) {
+  font-size: clamp(@min-size, @vw, @max-size);
+}
+
+// ==================== 边框相关混合器 ====================
+
+// 边框
+.border(@width: @border-width-base, @style: solid, @color: @border-color-base) {
+  border: @width @style @color;
+}
+
+// 单边边框
+.border-top(@width: @border-width-base, @style: solid, @color: @border-color-base) {
+  border-top: @width @style @color;
+}
+
+.border-right(@width: @border-width-base, @style: solid, @color: @border-color-base) {
+  border-right: @width @style @color;
+}
+
+.border-bottom(@width: @border-width-base, @style: solid, @color: @border-color-base) {
+  border-bottom: @width @style @color;
+}
+
+.border-left(@width: @border-width-base, @style: solid, @color: @border-color-base) {
+  border-left: @width @style @color;
+}
+
+// 圆角
+.border-radius(@radius: @border-radius-base) {
+  border-radius: @radius;
+}
+
+// ==================== 阴影相关混合器 ====================
+
+// 盒子阴影
+.box-shadow(@shadow: @box-shadow-base) {
+  box-shadow: @shadow;
+}
+
+// 文字阴影
+.text-shadow(@x: 1px, @y: 1px, @blur: 2px, @color: rgba(0, 0, 0, 0.3)) {
+  text-shadow: @x @y @blur @color;
+}
+
+// 内阴影
+.inset-shadow(@x: 0, @y: 2px, @blur: 4px, @color: rgba(0, 0, 0, 0.1)) {
+  box-shadow: inset @x @y @blur @color;
+}
+
+// ==================== 动画相关混合器 ====================
+
+// 过渡动画
+.transition(@property: all, @duration: @duration-base, @timing: @ease-base) {
+  transition: @property @duration @timing;
+}
+
+// 变换
+.transform(@transform) {
+  transform: @transform;
+}
+
+// 旋转
+.rotate(@angle) {
+  .transform(rotate(@angle));
+}
+
+// 缩放
+.scale(@ratio) {
+  .transform(scale(@ratio));
+}
+
+// 平移
+.translate(@x, @y: 0) {
+  .transform(translate(@x, @y));
+}
+
+// 悬停效果
+.hover-effect(@scale: 1.05, @duration: @duration-fast) {
+  .transition(transform, @duration);
+  cursor: pointer;
+  
+  &:hover {
+    .transform(scale(@scale));
+  }
+}
+
+// ==================== 卡片相关混合器 ====================
+
+// 基础卡片样式
+.card() {
+  background: @white;
+  .border-radius(@border-radius-large);
+  padding: @spacing-xl;
+  .box-shadow();
+  margin-bottom: @spacing-lg;
+  .transition();
+  
+  &:hover {
+    .box-shadow(@box-shadow-dark);
+  }
+}
+
+// ==================== 背景相关混合器 ====================
+
+// 背景图片
+.bg-image(@url, @size: cover, @position: center, @repeat: no-repeat) {
+  background-image: url(@url);
+  background-size: @size;
+  background-position: @position;
+  background-repeat: @repeat;
+}
+
+// 渐变背景
+.gradient-bg(@start: @primary-color, @end: @primary-dark-1, @direction: to bottom) {
+  background: linear-gradient(@direction, @start, @end);
+}
+
+// 毛玻璃效果
+.glass-effect(@blur: 10px, @opacity: 0.1) {
+  backdrop-filter: blur(@blur);
+  background: rgba(255, 255, 255, @opacity);
+}
+
+// ==================== 大屏适配混合器 ====================
+
+// 大屏容器
+.screen-container(@width: @design-width, @height: @design-height) {
+  width: @width;
+  height: @height;
+  transform-origin: top left;
+  position: relative;
+}
+
+// 大屏卡片
+.screen-card(@opacity: @screen-opacity-medium) {
+  background: rgba(255, 255, 255, @opacity);
+  border-radius: @border-radius-large;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  .transition();
+  
+  &:hover {
+    .transform(translateY(-4px));
+  }
+}
+
+// 数据展示卡片
+.data-card() {
+  .screen-card();
+  padding: @spacing-xl;
+  text-align: center;
+  color: white;
+}
+
+// ==================== 响应式断点混合器 ====================
+
+// 媒体查询
+.mobile(@content) {
+  @media (max-width: @breakpoint-md - 1) {
+    @content();
+  }
+}
+
+.tablet(@content) {
+  @media (min-width: @breakpoint-md) and (max-width: @breakpoint-lg - 1) {
+    @content();
+  }
+}
+
+.desktop(@content) {
+  @media (min-width: @breakpoint-lg) {
+    @content();
+  }
+}
+
+.large-screen(@content) {
+  @media (min-width: @breakpoint-xxl) {
+    @content();
+  }
+}
+
+// ==================== 工具类混合器 ====================
+
+// 清除浮动
+.clearfix() {
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+// 隐藏元素
+.hidden() {
+  display: none !important;
+}
+
+// 显示元素
+.visible() {
+  display: block !important;
+}
+
+// 不可见但占位
+.invisible() {
+  visibility: hidden;
+}
+
+// 禁用选择
+.no-select() {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+// 禁用拖拽
+.no-drag() {
+  -webkit-user-drag: none;
+  -moz-user-drag: none;
+  -ms-user-drag: none;
+  user-drag: none;
+}
+
+// 滚动条样式
+.custom-scrollbar(@width: 8px, @track-color: #f1f1f1, @thumb-color: #c1c1c1) {
+  &::-webkit-scrollbar {
+    width: @width;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: @track-color;
+    border-radius: @border-radius-base;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: @thumb-color;
+    border-radius: @border-radius-base;
+    
+    &:hover {
+      background: darken(@thumb-color, 10%);
+    }
+  }
+}
