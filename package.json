@@ -2,6 +2,7 @@
   "name": "vue3-project-mobile-template",
   "private": true,
   "version": "0.0.0",
+  "author": "QuanLong Lu",
   "type": "module",
   "scripts": {
     "dev": "vite",
