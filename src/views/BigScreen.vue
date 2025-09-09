@@ -56,7 +56,6 @@
                 <div class="data-unit">{{ item.unit }}</div>
                 <van-tag 
                   :type="item.trend === 'up' ? 'primary' : 'warning'" 
-                  size="small"
                 >
                   {{ item.change }}
                 </van-tag>
@@ -143,7 +142,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, onUnmounted, computed } from 'vue'
-import { showToast } from 'vant'
+// import { showToast } from 'vant'
 
 // 响应式数据
 const screenRef = ref<HTMLElement>()
@@ -220,14 +219,14 @@ const monitorData = reactive([
 ])
 
 // 方法
-function refreshData() {
-  updateData()
-  showToast({
-    message: '数据已刷新',
-    type: 'success',
-    duration: 1500
-  })
-}
+// function refreshData() {
+//   updateData()
+//   showToast({
+//     message: '数据已刷新',
+//     type: 'success',
+//     duration: 1500
+//   })
+// }
 
 function getProgressColor(value: number) {
   if (value < 50) return '#07c160'  // 绿色

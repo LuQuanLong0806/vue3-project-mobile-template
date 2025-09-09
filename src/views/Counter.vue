@@ -59,7 +59,7 @@
         @click="showSetDialog = true" 
         size="large"
         icon="edit"
-        type="info"
+        type="default"
         hairline
         block
       >

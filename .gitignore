@@ -8,6 +8,7 @@ lerna-debug.log*
 
 # 构建输出
 dist/
+scene-service-portal-mobile/
 dist-ssr/
 build/
 *.local

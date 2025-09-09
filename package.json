@@ -26,6 +26,7 @@
     "postcss": "^8.4.35",
     "postcss-preset-env": "^9.4.0",
     "postcss-px-to-viewport": "^1.1.1",
+    "terser": "^5.44.0",
     "typescript": "^5.4.3",
     "unplugin-auto-import": "^0.17.5",
     "unplugin-vue-components": "^0.26.0",
