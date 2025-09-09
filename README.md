@@ -11,6 +11,7 @@
 - 🛣️ **Vue Router 4** - 官方路由管理器
 - 📦 **Pinia** - 新一代状态管理
 - 🎯 **Auto Import** - 自动导入组件和 API
+- 🌐 **HTTP请求工具** - 基于axios的完善请求封装，集成认证、日志、错误处理
 - 📱 **移动端优先** - 专为移动设备优化设计
 - 🎨 **移动端适配** - PostCSS px-to-viewport 移动端适配方案
 - 🎨 **Less预处理器** - 强大的CSS预处理器支持
@@ -24,6 +25,7 @@
 - [Vant](https://vant-ui.github.io/vant/) - 轻量、可靠的移动端 Vue 组件库
 - [Vue Router](https://router.vuejs.org/) - Vue.js 官方路由
 - [Pinia](https://pinia.vuejs.org/) - Vue 状态管理
+- [Axios](https://axios-http.com/) - 基于Promise的HTTP客户端
 - [VueUse](https://vueuse.org/) - Vue 组合式函数集合
 - [PostCSS](https://postcss.org/) - CSS 处理工具
 - [Less](https://lesscss.org/) - CSS 预处理器
@@ -92,6 +94,16 @@ src/
 ├── stores/             # Pinia 状态管理
 ├── router/             # 路由配置
 ├── utils/              # 工具函数
+│   ├── request/        # HTTP请求工具
+│   │   ├── index.ts    # axios核心配置和拦截器
+│   │   ├── api.ts      # 请求方法封装
+│   │   ├── types.ts    # 请求相关类型定义
+│   │   ├── examples.ts # 使用示例
+│   │   └── README.md   # 请求工具文档
+│   ├── cache.ts        # 缓存工具
+│   ├── db/             # 数据存储工具
+│   ├── env.ts          # 环境配置
+│   ├── logger.ts       # 日志工具
 │   └── screen.ts       # 屏幕适配工具
 ├── styles/             # 样式文件
 │   ├── variables.less  # Less 变量
@@ -139,6 +151,68 @@ const routes = [
   }
 ]
 ```
+
+### HTTP请求工具
+
+项目集成了完善的axios请求封装，提供统一的API请求解决方案：
+
+#### 主要特性
+
+- **统一配置管理** - 集成项目环境配置系统
+- **用户认证** - 自动处理token、用户状态管理
+- **智能Loading** - 自动显示/隐藏加载状态
+- **错误处理** - 统一的错误处理和用户提示
+- **请求日志** - 完整的请求/响应日志记录
+- **防重复请求** - 自动防止短时间内的重复请求
+- **类型安全** - 完整的 TypeScript 类型定义
+- **请求缓存** - 支持请求结果缓存功能
+
+#### 基本使用
+
+```typescript
+import { get, post, put, del } from '@/utils/request/api'
+
+// GET 请求
+const users = await get<User[]>('/api/users')
+
+// POST 请求
+const newUser = await post<User>('/api/users', userData)
+
+// 带自定义配置
+const data = await get('/api/data', {}, {
+  skipLoading: true,    // 跳过loading
+  skipAuth: true,       // 跳过认证
+  skipErrorToast: true  // 跳过错误提示
+})
+```
+
+#### 文件操作
+
+```typescript
+import { upload, download } from '@/utils/request/api'
+
+// 文件上传
+const result = await upload('/api/upload', file, {
+  onUploadProgress: (progressEvent) => {
+    const progress = Math.round(
+      (progressEvent.loaded * 100) / progressEvent.total
+    )
+    console.log(`上传进度: ${progress}%`)
+  }
+})
+
+// 文件下载
+await download('/api/files/report.pdf', 'my-report.pdf')
+```
+
+#### 更多功能
+
+- **分页请求** - 内置分页请求支持
+- **批量请求** - 支持并发请求处理
+- **请求缓存** - 可配置的请求结果缓存
+- **错误重试** - 自动重试机制
+
+详细使用说明请参考 `src/utils/request/README.md`
 
 ## 🎨 Less 预处理器
 
@@ -312,6 +386,10 @@ module.exports = {
 - **计数器** (`/counter`) - Pinia 状态管理示例（移动端交互）
 - **数据可视化** (`/bigscreen`) - 移动端数据展示和图表演示
 - **Less演示** (`/less`) - Less 预处理器功能展示
+- **缓存演示** (`/cache`) - 缓存系统和本地存储演示
+- **存储演示** (`/storage`) - 本地存储管理演示
+- **缓存管理器** (`/cache-manager`) - 缓存数据管理和统计
+- **环境变量演示** (`/env`) - 环境配置和变量展示
 
 ### 移动端页面特性
 
@@ -319,6 +397,8 @@ module.exports = {
 - **关于页**: 单元格列表和折叠面板，适合移动端浏览
 - **计数器**: 移动端优化的按钮和交互设计
 - **数据可视化**: 移动端数据卡片和圆形进度指示器
+- **缓存演示**: 缓存功能测试和性能展示
+- **存储管理**: 本地存储数据的增删改查演示
 - **404页面**: 移动端友好的空状态页面设计
 
 ## 🚀 部署
@@ -396,5 +476,51 @@ module.exports = {
 @primary-color: #1989fa;      // 移动端主题色
 @font-size-base: 14px;        // 移动端基础字体大小
 @border-radius-base: 8px;     // 移动端圆角大小
+```
+
+## 🌐 HTTP请求配置
+
+项目的HTTP请求工具支持环境变量配置：
+
+### 环境变量
+
+在 `.env` 文件中配置API相关参数：
+
+```bash
+# API配置
+VITE_API_BASE_URL=https://api.example.com    # API基础地址
+VITE_API_TIMEOUT=10000                       # 请求超时时间(毫秒)
+
+# 应用配置
+VITE_APP_ENV=development                     # 应用环境
+VITE_APP_TITLE=Vue3移动端应用                # 应用标题
+VITE_LOG_LEVEL=info                          # 日志级别
+VITE_ENABLE_DEBUG=true                       # 调试模式
+VITE_ENABLE_MOCK=false                       # Mock模式
+```
+
+### 请求配置特性
+
+- **环境适配**: 根据不同环境自动配置API地址
+- **日志记录**: 基于环境配置的日志级别控制
+- **错误处理**: 集成Vant组件的错误提示
+- **用户认证**: 自动处理登录状态和token
+- **请求拦截**: 统一的请求头和参数处理
+- **响应处理**: 统一的数据格式和错误码处理
+
+### 自定义配置
+
+可以根据项目需求调整请求配置：
+
+```typescript
+// src/utils/request/index.ts
+const request = axios.create({
+  baseURL: EnvConfig.apiBaseUrl,
+  timeout: EnvConfig.apiTimeout,
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+})
 ```
 
